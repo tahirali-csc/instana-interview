@@ -6,11 +6,6 @@ import com.instana.assignment.model.Vertex;
 
 import java.util.*;
 
-//@FunctionalInterface
-//interface Filter {
-//    boolean filter(Vertex p, Vertex to, int depth, int avgLatency, List<Vertex> cp);
-//}
-
 public class TraceGraph {
     List<Vertex> nodes;
 
@@ -72,9 +67,9 @@ public class TraceGraph {
         }
         while (!pq.isEmpty()) {
             Vertex current = pq.poll();
-//            if (current.equals(dest)) {
-//                break;
-//            }
+            if (current.equals(dest)) {
+                break;
+            }
             visited.add(current);
 
             for (Edge edge : current.getEdges()) {
@@ -92,4 +87,32 @@ public class TraceGraph {
 
         return dist.get(dest);
     }
+
+    public int getTraceCount(Vertex from, TraceFilter filter) {
+        CountWrapper wrapper = new CountWrapper();
+        for (Edge e : from.getEdges()) {
+            expandTrace(e.getTo(), e.getCost(), 1, filter, wrapper);
+        }
+        return wrapper.count;
+    }
+
+    private void expandTrace(Vertex parent, int latencySoFar, int hops, TraceFilter filter, CountWrapper wrapper) {
+        FilterStatus res = filter.Filter(parent, hops, latencySoFar);
+        if (!res.isExpandTrace()) {
+            return;
+        }
+
+        if (res.isTraceFound()) {
+            wrapper.count++;
+        }
+
+        for (Edge e : parent.getEdges()) {
+            expandTrace(e.getTo(), latencySoFar + e.getCost(), hops + 1, filter, wrapper);
+        }
+    }
+
+    class CountWrapper {
+        int count;
+    }
 }
+
