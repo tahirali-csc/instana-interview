@@ -1,5 +1,6 @@
 package com.instana.assignment.graph;
 
+import com.instana.assignment.exception.NoSuchTraceException;
 import com.instana.assignment.model.Edge;
 import com.instana.assignment.model.Vertex;
 
@@ -15,6 +16,38 @@ public class TraceGraph {
 
     public TraceGraph(List<Vertex> nodes) {
         this.nodes = nodes;
+    }
+
+    public int avgLatency(Vertex... vertices) {
+        int avgLatency = 0;
+
+        if (vertices.length > 0) {
+            Vertex endVertex = vertices[vertices.length - 1];
+
+            Queue<Vertex> q = new ArrayDeque<>();
+            q.add(vertices[0]);
+
+            int indexInTrace = 1;
+
+            while (!q.isEmpty()) {
+                Vertex current = q.poll();
+                if (current == endVertex) {
+                    break;
+                }
+
+                Vertex next = vertices[indexInTrace];
+                Edge edge = current.findEdge(next);
+
+                if (edge == null || !edge.getTo().equals(next)) {
+                    throw new NoSuchTraceException("NO SUCH TRACE");
+                }
+
+                avgLatency += edge.getCost();
+                indexInTrace++;
+                q.add(edge.getTo());
+            }
+        }
+        return avgLatency;
     }
 
     public int avgLatency(List<Vertex> trace) {
@@ -92,15 +125,15 @@ public class TraceGraph {
     }
 
     void expand1(Vertex f, Vertex t, int sum, List<Vertex> cp) {
-        if (sum > 30){
-            cp.remove(cp.size()-1);
+        if (sum > 30) {
+            cp.remove(cp.size() - 1);
             return;
         }
 
         cp.add(f);
-        if (f == t&& sum < 30){
+        if (f == t && sum < 30) {
             System.out.println("*********");
-            for (Vertex v: cp) {
+            for (Vertex v : cp) {
                 System.out.print(v.getValue() + ",");
             }
 //            cp.remove(cp.size()-1);

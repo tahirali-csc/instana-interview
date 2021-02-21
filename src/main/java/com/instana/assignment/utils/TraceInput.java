@@ -1,6 +1,6 @@
 package com.instana.assignment.utils;
 
-class TraceInput {
+public class TraceInput {
     private char from;
     private char to;
 

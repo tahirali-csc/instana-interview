@@ -25,6 +25,12 @@ public class GraphImporterTest {
         Vertex vD = vertices.get(3);
         Vertex vE = vertices.get(4);
 
+        assertEquals(vertices.get(0), vA);
+        assertEquals(vertices.get(1), vB);
+        assertEquals(vertices.get(2), vC);
+        assertEquals(vertices.get(3), vD);
+        assertEquals(vertices.get(4), vE);
+
         assertTrue(vA.has(new Edge(vB,5)));
         assertTrue(vA.has(new Edge(vD,5)));
         assertTrue(vA.has(new Edge(vE,7)));

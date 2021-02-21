@@ -1,13 +1,86 @@
 package com.instana.assignment.graph;
 
+import com.instana.assignment.exception.NoSuchTraceException;
 import com.instana.assignment.model.Edge;
 import com.instana.assignment.model.Vertex;
+import com.instana.assignment.utils.CsvReader;
+import com.instana.assignment.utils.GraphImporter;
+import com.instana.assignment.utils.InvalidInputException;
+import com.instana.assignment.utils.TraceInput;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.util.*;
 
 public class TraceGraphTest {
+    final String path = "src/test/resources/input.csv";
+
+    @Test
+    public void avgLatencyABC() throws IOException, InvalidInputException {
+        List<Vertex> vertices = importGraph();
+        Vertex vA = vertices.get(0);
+        Vertex vB = vertices.get(1);
+        Vertex vC = vertices.get(2);
+
+        TraceGraph graph = new TraceGraph(vertices);
+        int latency = graph.avgLatency(vA, vB, vC);
+        Assertions.assertEquals(9, latency);
+    }
+
+    @Test
+    public void avgLatencyAD() throws IOException, InvalidInputException {
+        List<Vertex> vertices = importGraph();
+        Vertex vA = vertices.get(0);
+        Vertex vD = vertices.get(3);
+
+        TraceGraph graph = new TraceGraph(vertices);
+        int latency = graph.avgLatency(vA, vD);
+        Assertions.assertEquals(5, latency);
+    }
+
+    @Test
+    public void avgLatencyADC() throws IOException, InvalidInputException {
+        List<Vertex> vertices = importGraph();
+        Vertex vA = vertices.get(0);
+        Vertex vC = vertices.get(2);
+        Vertex vD = vertices.get(3);
+
+        TraceGraph graph = new TraceGraph(vertices);
+        int latency = graph.avgLatency(vA, vD, vC);
+        Assertions.assertEquals(13, latency);
+    }
+
+    @Test
+    public void avgLatencyAEBCD() throws IOException, InvalidInputException {
+        List<Vertex> vertices = importGraph();
+        Vertex vA = vertices.get(0);
+        Vertex vB = vertices.get(1);
+        Vertex vC = vertices.get(2);
+        Vertex vD = vertices.get(3);
+        Vertex vE = vertices.get(4);
+
+        TraceGraph graph = new TraceGraph(vertices);
+        int latency = graph.avgLatency(vA, vE, vB, vC, vD);
+        Assertions.assertEquals(22, latency);
+    }
+
+    @Test()
+    public void avgLatencyAED() throws IOException, InvalidInputException {
+        List<Vertex> vertices = importGraph();
+        Vertex vA = vertices.get(0);
+        Vertex vD = vertices.get(3);
+        Vertex vE = vertices.get(4);
+
+        TraceGraph graph = new TraceGraph(vertices);
+        Assertions.assertThrows(NoSuchTraceException.class, ()-> graph.avgLatency(vA, vE, vD));
+    }
+
+
+    private List<Vertex> importGraph() throws IOException, InvalidInputException {
+        List<TraceInput> traceInputs = CsvReader.readFile(path);
+        return GraphImporter.importGraph(traceInputs);
+    }
 
 //    @Test
 //    public void Hello() throws IOException {

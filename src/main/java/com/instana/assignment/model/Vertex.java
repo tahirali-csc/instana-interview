@@ -4,11 +4,11 @@ import java.util.*;
 
 public class Vertex {
     private final char value;
-    private final Set<Edge> edges;
+    private final Map<Character, Edge> edges;
 
     public Vertex(char value) {
         this.value = value;
-        this.edges = new HashSet<>();
+        this.edges = new HashMap<>();
     }
 
     public char getValue() {
@@ -16,17 +16,20 @@ public class Vertex {
     }
 
     public void addEdge(Vertex to, int cost) {
-        this.edges.add(new Edge(to, cost));
+        this.edges.put(to.value, new Edge(to, cost));
     }
 
     public Iterable<Edge> getEdges() {
-        return this.edges;
+        return this.edges.values();
     }
 
     public boolean has(Edge edge) {
-        return this.edges.contains(edge);
+        return this.edges.containsKey(edge.getTo().value);
     }
 
+    public Edge findEdge(Vertex to) {
+        return this.edges.get(to.value);
+    }
 
     @Override
     public String toString() {
