@@ -6,12 +6,13 @@
 
 
 #### **Compile & Run Tests**
-This runs tests and produces intana-app.jar at base directory.
+This runs tests and produces interview-app.jar at the base directory.
 ```
 ./build.sh
 ```
 
-### **Run app**
+### **Run the app**
+The ```input.csv``` is located at the base directory.
 ```
 java -jar interview-app.jar input.csv out.txt
 ```
