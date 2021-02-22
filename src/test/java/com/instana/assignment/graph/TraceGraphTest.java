@@ -1,9 +1,7 @@
 package com.instana.assignment.graph;
 
 import com.instana.assignment.exception.NoSuchTraceException;
-import com.instana.assignment.graph.filters.ToCWithAvgLatencyLessThanThirty;
-import com.instana.assignment.graph.filters.ToCWithExact4Hops;
-import com.instana.assignment.graph.filters.ToCWithMaxThreeHops;
+import com.instana.assignment.graph.filters.*;
 import com.instana.assignment.model.Vertex;
 import com.instana.assignment.utils.CsvReader;
 import com.instana.assignment.utils.GraphImporter;
@@ -106,7 +104,9 @@ public class TraceGraphTest {
         Vertex vC = vertices.get(2);
 
         TraceGraph graph = new TraceGraph(vertices);
-        assertEquals(2, graph.getTraceCount(vC, new ToCWithMaxThreeHops(vC)));
+//        assertEquals(2, graph.getTraceCount(vC, new ToCWithMaxThreeHops(vC)));
+        Criteria criteria = new Criteria(Operator.LessThanAndEqual, ValueType.Hops, 3);
+        assertEquals(2, graph.getTraceCount(vC, new TracePathFilter(vC, criteria)));
     }
 
     @Test()
@@ -116,7 +116,9 @@ public class TraceGraphTest {
         Vertex vC = vertices.get(2);
 
         TraceGraph graph = new TraceGraph(vertices);
-        assertEquals(3, graph.getTraceCount(vA, new ToCWithExact4Hops(vC)));
+//        assertEquals(3, graph.getTraceCount(vA, new ToCWithExact4Hops(vC)));
+        Criteria criteria = new Criteria(Operator.Equal, ValueType.Hops, 4);
+        assertEquals(3, graph.getTraceCount(vA, new TracePathFilter(vC, criteria)));
     }
 
     @Test()
@@ -125,7 +127,9 @@ public class TraceGraphTest {
         Vertex vC = vertices.get(2);
 
         TraceGraph graph = new TraceGraph(vertices);
-        assertEquals(7, graph.getTraceCount(vC, new ToCWithAvgLatencyLessThanThirty(vC)));
+//        assertEquals(7, graph.getTraceCount(vC, new ToCWithAvgLatencyLessThanThirty(vC)));
+        Criteria criteria = new Criteria(Operator.LessThan, ValueType.AvgLatency, 30);
+        assertEquals(7, graph.getTraceCount(vC, new TracePathFilter(vC, criteria)));
     }
 
     private List<Vertex> importGraph() throws IOException, InvalidInputException {
