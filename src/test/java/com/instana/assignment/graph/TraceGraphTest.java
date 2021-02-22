@@ -1,10 +1,10 @@
 package com.instana.assignment.graph;
 
 import com.instana.assignment.exception.NoSuchTraceException;
-import com.instana.assignment.graph.filters.Criteria;
-import com.instana.assignment.graph.filters.Operator;
-import com.instana.assignment.graph.filters.TracePathFilter;
-import com.instana.assignment.graph.filters.ValueType;
+import com.instana.assignment.graph.filter.Criteria;
+import com.instana.assignment.graph.filter.Operator;
+import com.instana.assignment.graph.filter.TracePathFilter;
+import com.instana.assignment.graph.filter.ValueType;
 import com.instana.assignment.model.Vertex;
 import com.instana.assignment.utils.GraphImporter;
 import com.instana.assignment.utils.InvalidInputException;
@@ -69,7 +69,7 @@ public class TraceGraphTest {
     }
 
     @Test
-    public void avgLatencyShortestAB() {
+    public void avgLatencyShortestBB() {
         TraceGraph graph = new TraceGraph(vertices);
         assertEquals(9, graph.avgLatencyByTrace(vB, vB));
     }

@@ -1,4 +1,4 @@
-package com.instana.assignment.graph.filters;
+package com.instana.assignment.graph.filter;
 
 import com.instana.assignment.graph.FilterStatus;
 import com.instana.assignment.graph.TraceFilter;

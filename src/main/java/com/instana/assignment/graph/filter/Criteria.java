@@ -1,4 +1,4 @@
-package com.instana.assignment.graph.filters;
+package com.instana.assignment.graph.filter;
 
 public class Criteria {
     private Operator operator;
