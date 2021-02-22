@@ -34,8 +34,8 @@ public class GraphProcessor {
 
         try (FileWriter fileWriter = new FileWriter(outputFile);
              PrintWriter printWriter = new PrintWriter(fileWriter)) {
-            for (Object o : output) {
-                printWriter.println(o);
+            for (int i = 0; i < output.size(); i++) {
+                printWriter.println(String.format("%d. %s", i + 1, output.get(i)));
             }
             System.out.println("File is created at ::" + outputFile);
         } catch (IOException e) {

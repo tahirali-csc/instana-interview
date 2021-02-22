@@ -6,6 +6,12 @@
 
 
 #### **Compile & Run Tests**
+This runs tests and produces intana-app.jar at base directory.
 ```
-mvn clean install
+./build.sh
+```
+
+### **Run app**
+```
+java -jar interview-app.jar input.csv out.txt
 ```
