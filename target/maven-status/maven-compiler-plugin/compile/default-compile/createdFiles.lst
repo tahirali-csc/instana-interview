@@ -1,4 +1,15 @@
 com/instana/assignment/model/Vertex.class
+com/instana/assignment/graph/filter/TracePathFilter.class
+com/instana/assignment/graph/FilterStatus.class
+com/instana/assignment/graph/TraceGraph$CountWrapper.class
+com/instana/assignment/graph/filter/Operator.class
+com/instana/assignment/graph/TraceFilter.class
 com/instana/assignment/MainApp.class
 com/instana/assignment/model/Edge.class
+com/instana/assignment/graph/GraphProcessor.class
 com/instana/assignment/graph/TraceGraph.class
+com/instana/assignment/exception/NoSuchTraceException.class
+com/instana/assignment/utils/GraphImporter.class
+com/instana/assignment/graph/filter/Criteria.class
+com/instana/assignment/utils/InvalidInputException.class
+com/instana/assignment/graph/filter/ValueType.class
