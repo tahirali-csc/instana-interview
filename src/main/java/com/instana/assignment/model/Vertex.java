@@ -23,10 +23,6 @@ public class Vertex {
         return this.edges.values();
     }
 
-    public boolean has(Edge edge) {
-        return this.edges.containsKey(edge.getTo().value);
-    }
-
     public Edge findEdge(Vertex to) {
         return this.edges.get(to.value);
     }

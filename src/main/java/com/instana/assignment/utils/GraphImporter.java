@@ -1,26 +1,48 @@
 package com.instana.assignment.utils;
 
-import com.instana.assignment.model.Edge;
 import com.instana.assignment.model.Vertex;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class GraphImporter {
+    final static String DELIMITER = ",";
 
-    public static List<Vertex> importGraph(List<TraceInput> trace) {
+    public static List<Vertex> importFile(String path) throws IOException, InvalidInputException {
+        File file = new File(path);
+        String absolutePath = file.getAbsolutePath();
+
         HashMap<Character, Vertex> vertexMap = new HashMap<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(absolutePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(GraphImporter.DELIMITER);
+                for (String val : values) {
+                    val = val.trim();
+                    if (val.length() >= 3) {
+                        //Parse Trace Input. For example AB5
+                        char from = val.charAt(0);
+                        char to = val.charAt(1);
+                        int dist = Integer.parseInt(val.substring(2));
 
-        for (TraceInput t : trace) {
-            Vertex from = vertexMap.getOrDefault(t.getFrom(), new Vertex(t.getFrom()));
-            Vertex to = vertexMap.getOrDefault(t.getTo(), new Vertex(t.getTo()));
+                        Vertex fromVertex = vertexMap.getOrDefault(from, new Vertex(from));
+                        Vertex sourceVertex = vertexMap.getOrDefault(to, new Vertex(to));
 
-            from.addEdge(to, t.getDistance());
+                        fromVertex.addEdge(sourceVertex, dist);
 
-            vertexMap.put(t.getFrom(), from);
-            vertexMap.put(t.getTo(), to);
+                        vertexMap.put(from, fromVertex);
+                        vertexMap.put(to, sourceVertex);
+                    } else {
+                        throw new InvalidInputException(String.format("Invalid trace input: %s", val));
+                    }
+                }
+            }
         }
 
         List<Vertex> vertices = new ArrayList<>();

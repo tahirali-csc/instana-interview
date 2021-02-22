@@ -1,4 +1,4 @@
 com/instana/assignment/model/Vertex.class
-com/instana/assignment/graph/TraceGraph.class
 com/instana/assignment/MainApp.class
 com/instana/assignment/model/Edge.class
+com/instana/assignment/graph/TraceGraph.class
