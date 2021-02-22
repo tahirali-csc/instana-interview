@@ -6,24 +6,38 @@ import com.instana.assignment.model.Vertex;
 
 import java.util.*;
 
+/**
+ * This class maintains the graph of vertices and processes trace requests
+ */
 public class TraceGraph {
     List<Vertex> nodes;
 
+    /**
+     * Initialize a trace graph
+     * @param nodes
+     */
     public TraceGraph(List<Vertex> nodes) {
         this.nodes = nodes;
     }
 
+    /**
+     * Finds the average latency based on minimum number of hops. The traversal exactly matches
+     * the specified input trace.
+     * @param vertices Input trace
+     * @return average latency
+     */
     public int avgLatencyByHops(Vertex... vertices) {
         int avgLatency = 0;
 
         if (vertices.length > 0) {
             Vertex endVertex = vertices[vertices.length - 1];
 
+            //Because we are using minimum number of hops, we are using BFS
+            //approach to find the distance.
             Queue<Vertex> q = new ArrayDeque<>();
             q.add(vertices[0]);
 
             int indexInTrace = 1;
-
             while (!q.isEmpty()) {
                 Vertex current = q.poll();
                 if (current == endVertex) {
@@ -45,7 +59,15 @@ public class TraceGraph {
         return avgLatency;
     }
 
+    /**
+     * Finds the shortest trace based on average latency.
+     * @param source
+     * @param dest
+     * @return
+     */
     public int avgLatencyByTrace(Vertex source, Vertex dest) {
+        //We use Dijkstra algorithm to find the shortest distance
+
         //Store the min distance from start node
         Map<Vertex, Integer> dist = new HashMap<>();
         //Store the immediate parent node from the start node
@@ -55,16 +77,19 @@ public class TraceGraph {
         //Always pick node which has the smallest distance from the start node
         PriorityQueue<Vertex> pq = new PriorityQueue<>(Comparator.comparingInt(dist::get));
 
+        //Initialize the data
         for (Vertex v : this.nodes) {
             dist.put(v, Integer.MAX_VALUE);
             cameFrom.put(v, null);
         }
 
+        //Add the source node edges in Queue
         for (Edge e : source.getEdges()) {
             pq.add(e.getTo());
             dist.put(e.getTo(), e.getCost());
             cameFrom.put(e.getTo(), source);
         }
+
         while (!pq.isEmpty()) {
             Vertex current = pq.poll();
             if (current.equals(dest)) {

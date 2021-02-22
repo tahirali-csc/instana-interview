@@ -32,64 +32,94 @@ public class TraceGraphTest {
         vE = vertices.get(4);
     }
 
+    /**
+     * Question # 1
+     */
     @Test
     public void avgLatencyABC() {
         TraceGraph graph = new TraceGraph(vertices);
         assertEquals(9, graph.avgLatencyByHops(vA, vB, vC));
     }
 
+    /**
+     * Question # 2
+     */
     @Test
     public void avgLatencyAD() {
         TraceGraph graph = new TraceGraph(vertices);
         assertEquals(5, graph.avgLatencyByHops(vA, vD));
     }
 
+    /**
+     * Question # 3
+     */
     @Test
     public void avgLatencyADC() {
         TraceGraph graph = new TraceGraph(vertices);
         assertEquals(13, graph.avgLatencyByHops(vA, vD, vC));
     }
 
+    /**
+     * Question # 4
+     */
     @Test
     public void avgLatencyAEBCD() {
         TraceGraph graph = new TraceGraph(vertices);
         assertEquals(22, graph.avgLatencyByHops(vA, vE, vB, vC, vD));
     }
 
+    /**
+     * Question # 5
+     */
     @Test
     public void avgLatencyAED() {
         TraceGraph graph = new TraceGraph(vertices);
         assertThrows(NoSuchTraceException.class, () -> graph.avgLatencyByHops(vA, vE, vD));
     }
 
+    /**
+     * Question # 6
+     */
+    @Test
+    public void fromCtoCWithMaxThreeHops() {
+        TraceGraph graph = new TraceGraph(vertices);
+        Criteria criteria = new Criteria(Operator.LessThanAndEqual, ValueType.Hops, 3);
+        assertEquals(2, graph.getTraceCount(vC, new TracePathFilter(vC, criteria)));
+    }
+
+    /**
+     * Question # 7
+     */
+    @Test
+    public void fromAtoCWithFourHops() {
+        TraceGraph graph = new TraceGraph(vertices);
+        Criteria criteria = new Criteria(Operator.Equal, ValueType.Hops, 4);
+        assertEquals(3, graph.getTraceCount(vA, new TracePathFilter(vC, criteria)));
+    }
+
+    /**
+     * Question # 8
+     */
     @Test
     public void avgLatencyShortestAC() {
         TraceGraph graph = new TraceGraph(vertices);
         assertEquals(9, graph.avgLatencyByTrace(vA, vC));
     }
 
+    /**
+     * Question # 9
+     */
     @Test
     public void avgLatencyShortestBB() {
         TraceGraph graph = new TraceGraph(vertices);
         assertEquals(9, graph.avgLatencyByTrace(vB, vB));
     }
 
+    /**
+     * Question # 10
+     */
     @Test
-    public void totalTracesCtoCWithMaxThreeHops() {
-        TraceGraph graph = new TraceGraph(vertices);
-        Criteria criteria = new Criteria(Operator.LessThanAndEqual, ValueType.Hops, 3);
-        assertEquals(2, graph.getTraceCount(vC, new TracePathFilter(vC, criteria)));
-    }
-
-    @Test
-    public void toCWithExactFourHops() {
-        TraceGraph graph = new TraceGraph(vertices);
-        Criteria criteria = new Criteria(Operator.Equal, ValueType.Hops, 4);
-        assertEquals(3, graph.getTraceCount(vA, new TracePathFilter(vC, criteria)));
-    }
-
-    @Test
-    public void totalTracesCWithAvgLatencyLessThanThirty() {
+    public void fromCtCWithAvgLatencyLessThanThirty() {
         TraceGraph graph = new TraceGraph(vertices);
         Criteria criteria = new Criteria(Operator.LessThan, ValueType.AvgLatency, 30);
         assertEquals(7, graph.getTraceCount(vC, new TracePathFilter(vC, criteria)));

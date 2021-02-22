@@ -23,8 +23,6 @@ public class GraphProcessorTest {
         GraphProcessor graphProcessor = new GraphProcessor();
         graphProcessor.process(inputFile, outputFile);
 
-//        System.out.println(outputFile);
-
         List<String> lines = Files.readAllLines(tmp);
         assertEquals(10, lines.size());
         assertEquals("1. 9", lines.get(0));

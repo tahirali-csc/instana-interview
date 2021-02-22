@@ -11,13 +11,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Imports the graph from a file
+ */
 public class GraphImporter {
-    final static String DELIMITER = ",";
+    private final static String DELIMITER = ",";
 
+    /**
+     * @param path Imports a file
+     * @return List of vertices
+     * @throws IOException
+     * @throws InvalidInputException
+     */
     public static List<Vertex> importFile(String path) throws IOException, InvalidInputException {
         File file = new File(path);
         String absolutePath = file.getAbsolutePath();
 
+        //Stores the mapping of Vertices
         HashMap<Character, Vertex> vertexMap = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(absolutePath))) {
             String line;
