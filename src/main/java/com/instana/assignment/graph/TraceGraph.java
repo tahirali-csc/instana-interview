@@ -113,7 +113,14 @@ public class TraceGraph {
         return dist.get(dest);
     }
 
+    /**
+     * Finds the trace between nodes using specified filter
+     * @param from
+     * @param filter
+     * @return
+     */
     public int getTraceCount(Vertex from, TraceFilter filter) {
+        //We use DFS approach to expand all possible paths in a trace
         CountWrapper wrapper = new CountWrapper();
         for (Edge e : from.getEdges()) {
             expandTrace(e.getTo(), e.getCost(), 1, filter, wrapper);
