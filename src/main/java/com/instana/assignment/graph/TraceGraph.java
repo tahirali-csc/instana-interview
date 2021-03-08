@@ -40,7 +40,7 @@ public class TraceGraph {
             int indexInTrace = 1;
             while (!q.isEmpty()) {
                 Vertex current = q.poll();
-                if (current == endVertex) {
+                if (current.equals(endVertex)) {
                     break;
                 }
 
